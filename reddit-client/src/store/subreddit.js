@@ -22,7 +22,11 @@ const actions = {
     post.user_id = firebase.auth().currentUser.uid;
     post.created_at = firebase.firestore.FieldValue.serverTimestamp();
     post.updated_at = firebase.firestore.FieldValue.serverTimestamp();
-    await posts.doc(post.id).set(post);
+    try {
+      await posts.doc(post.id).set(post);
+    } catch (error) {
+      console.log(error);
+    }
   },
   initSubreddit: firebaseAction(({ bindFirebaseRef }, name) => {
     bindFirebaseRef('subreddits', db.collection('subreddits').where('name', '==', name));

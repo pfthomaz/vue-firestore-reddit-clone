@@ -22,7 +22,7 @@
                 <figcaption>{{ user.name }}</figcaption>
 
               </section>
-              <a class="button is-primary" @click="logout()">
+              <a class="button is-info" @click="logout()">
                 LogOut
               </a>
             </p>
