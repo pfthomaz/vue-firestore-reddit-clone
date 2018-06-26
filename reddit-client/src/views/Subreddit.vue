@@ -1,7 +1,6 @@
 <template>
   <section>
     <button @click="showForm=!showForm" class="button is-info">Toogle Form</button>
-    <h1>{{ subreddit.name }}</h1>
     <form v-if="showForm" @submit.prevent="onCreatePost(post)">
       <b-field label="Title">
         <b-input v-model="post.title" required></b-input>
