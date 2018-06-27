@@ -1,8 +1,9 @@
 /* eslint-disable */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import auth from './auth';
 import { firebaseMutations } from 'vuexfire';
+
+import auth from './auth';
 import subreddits from './subreddits';
 import subreddit from './subreddit';
 
