@@ -6,6 +6,7 @@ import { firebaseMutations } from 'vuexfire';
 import auth from './auth';
 import subreddits from './subreddits';
 import subreddit from './subreddit';
+import users from './users';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     subreddits,
-    subreddit
+    subreddit,
+    users
   }
 });
