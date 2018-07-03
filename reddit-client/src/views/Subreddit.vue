@@ -18,8 +18,13 @@
       </b-field>
       <button class="button is-success">Add Post</button>
     </form>
+    <form class="search-form">
+      <b-field label="Search">
+        <b-input v-model="searchTerm"></b-input>
+      </b-field>
+    </form>
     <div class="posts columns is-multiline is-4">
-      <div class="column is-4" v-for="(post, index) in posts" :key="post.id">
+      <div class="column is-4" v-for="(post, index) in filteredPosts" :key="post.id">
         <div class="card">
           <div class="card-image" v-if="isImage(post.URL)">
             <figure class="image is-4by3">
@@ -53,11 +58,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapActions
+} from 'vuex';
 
 export default {
   data: () => ({
     showForm: false,
+    searchTerm: '',
     post: {
       title: '',
       description: '',
@@ -69,9 +79,7 @@ export default {
     this.initSubreddit(this.$route.params.name);
   },
   watch: {
-    /* eslint-disable */
     '$route.params.name'() {
-    /* eslint-enable */
       this.initSubreddit(this.$route.params.name);
     },
     subreddit() {
@@ -89,14 +97,20 @@ export default {
     }),
     loadedUsersById() {
       return this.posts.reduce((byId, post) => {
-        /* eslint-disable */
         byId[post.user_id] = this.usersById[post.user_id] || {
-          /* eslint-enable */
           name: 'Loading...',
           image: 'https://bulma.io/images/placeholders/48x48.png'
         };
         return byId;
       }, {});
+    },
+    filteredPosts() {
+      if (this.searchTerm) {
+        const regexp = new RegExp(this.searchTerm, 'gi');
+        return this.posts.filter(post => (post.title + post.description)
+          .match(regexp));
+      }
+      return this.posts;
     }
   },
   methods: {
@@ -104,7 +118,9 @@ export default {
       return url.match(/(png|jpg|jpeg|gif)$/);
     },
     ...mapActions('subreddit', ['createPost', 'initSubreddit', 'initPosts']),
-    ...mapActions('users', { initUsers: 'init' }),
+    ...mapActions('users', {
+      initUsers: 'init'
+    }),
     async onCreatePost() {
       if (this.post.title && (this.post.description || this.post.URL)) {
         this.createPost(this.post);
@@ -149,6 +165,10 @@ export default {
 </script>
 
 <style>
+.search-form {
+  margin-top: 2em;
+}
+
 .posts {
   margin-top: 2em;
 }
